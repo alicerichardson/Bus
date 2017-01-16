@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +28,13 @@ public class MainActivity extends AppCompatActivity {
     ImageButton card14View;
     ImageButton card15View;
     ImageButton card16View;
+    Button resetButton;
+    Card[] fullDeck;
+    ArrayList<Card> drawDeck;
+    ArrayList<Card> shownCards;
+
+    private int player1Score;
+    private int player2Score;
 
 
     @Override
@@ -50,7 +58,14 @@ public class MainActivity extends AppCompatActivity {
         card14View = (ImageButton)findViewById(R.id.space14);
         card15View = (ImageButton)findViewById(R.id.space15);
         card16View = (ImageButton)findViewById(R.id.space16);
+        resetButton = (Button)findViewById(R.id.newGameButton);
 
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reset();
+            }
+        });
 
         card1View.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +187,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void reset(){
+
+        shuffle();
+        player1Score = 0;
+        player2Score = 0;
+    }
+
 
     public void viewCard(ImageButton card)
     {
@@ -179,6 +201,25 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, CardActivity.class));
     }
 
-
+    private void shuffle()
+    {
+        int count = 0;
+        //for all 52 cards in the deck
+        while (count<52) {
+            //get a random card
+            Card card = fullDeck[(int)Math.floor(Math.random()*52)];
+            //for the first 16 cards drawn
+            if (count < 16) {
+                //add to the screen
+                shownCards.add(card);
+            }
+            //for the rest of the cards
+            else {
+                //add to the deck
+                drawDeck.add(card);
+            }
+            count++;
+        }
+    }
 
 }
