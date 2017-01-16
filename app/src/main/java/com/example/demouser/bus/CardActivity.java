@@ -61,6 +61,7 @@ public class CardActivity extends AppCompatActivity {
         higherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //compareCards
                 //highToast.show();
                 toast.show();
                 finish();
@@ -70,6 +71,7 @@ public class CardActivity extends AppCompatActivity {
         lowerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //compareCards()
                 //lowToast.show();
                 toast.show();
                 finish();
