@@ -1,11 +1,18 @@
 package com.example.demouser.bus;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageSwitcher;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -32,14 +39,30 @@ public class MainActivity extends AppCompatActivity {
     Card[] fullDeck;
     ArrayList<Card> drawDeck;
     ArrayList<Card> shownCards;
-
+    int[] shownCardValues;
+    int pic;
     private int player1Score;
     private int player2Score;
+
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private String mUserEmail;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        if(mFirebaseUser == null){
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return;
+        } else{
+            mUserEmail = mFirebaseUser.getEmail();
+        }
+
         setContentView(R.layout.activity_main);
 
         card1View = (ImageButton)findViewById(R.id.space1);
@@ -60,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         card16View = (ImageButton)findViewById(R.id.space16);
         resetButton = (Button)findViewById(R.id.newGameButton);
 
+        initDeck();
+
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 viewCard(card1View);
+                //putExtra
             }
         });
         card2View.setOnClickListener(new View.OnClickListener() {
@@ -165,9 +191,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+        pic = R.drawable.ace_of_clubs;
+
         //remove this from this method
-        card1View.setImageResource(R.drawable.ace_of_clubs);
-        card1View.set
+        card1View.setImageResource(pic);
+
         card2View.setImageResource(R.drawable.four_of_clubs);
         card3View.setImageResource(R.drawable.ten_of_clubs);
         card4View.setImageResource(R.drawable.jack_of_diamonds2);
@@ -219,6 +248,37 @@ public class MainActivity extends AppCompatActivity {
                 drawDeck.add(card);
             }
             count++;
+        }
+    }
+
+    private void setCard(int n, Card card){
+        shownCardValues = new int[16];
+        for(int i=0; i < 16; i++){
+            //
+        }
+
+        shownCardValues[n] = card.getNumber();
+
+        int pic;
+
+        pic = R.drawable.ace_of_clubs;
+
+
+
+        card1View.setImageResource(pic);
+
+
+    }
+
+    private void initDeck(){
+        fullDeck = new Card[52];
+        for(int i = 0; i < 52; i+=4){
+            for (int j = 1; j <= 13; j++){
+                fullDeck[i] = new Card(j, 1);
+                fullDeck[i+1] = new Card(j, 2);
+                fullDeck[i+2] = new Card(j, 3);
+                fullDeck[i+3] = new Card(j, 4);
+            }
         }
     }
 

@@ -18,11 +18,6 @@ public class CardActivity extends AppCompatActivity {
     Toast highToast;
     Toast lowToast;
 
-//    public CardActivity(ImageButton selectedCard){
-//        card = selectedCard;
-//    }
-
-    //
 
     LayoutInflater inflater;
     Toast toast;
@@ -61,7 +56,7 @@ public class CardActivity extends AppCompatActivity {
         higherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //compareCards
+
                 //highToast.show();
                 toast.show();
                 finish();
@@ -83,6 +78,7 @@ public class CardActivity extends AppCompatActivity {
 
     }
 
-
-
+    private boolean isHigher(){
+        return true;
+    }
 }

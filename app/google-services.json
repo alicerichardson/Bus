@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "151478616926",
+    "firebase_url": "https://jterm-bus.firebaseio.com",
+    "project_id": "jterm-bus",
+    "storage_bucket": "jterm-bus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:151478616926:android:5811fc4709bc3db7",
+        "android_client_info": {
+          "package_name": "com.example.demouser.bus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "151478616926-a80hmml9o1opqt7nouh0lt239joc2cd6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.demouser.bus",
+            "certificate_hash": "3EBCAA748B7777C0B421FF909D47873A6E0868A8"
+          }
+        },
+        {
+          "client_id": "151478616926-4k9ojmeeph16514nc4difufom1ujb0rs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0WWy8VIYDz1pcooZh-2F6hn6PWdJfkcg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "151478616926-4k9ojmeeph16514nc4difufom1ujb0rs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
