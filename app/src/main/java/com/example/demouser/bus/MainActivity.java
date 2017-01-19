@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private int player1Score;
     private int player2Score;
     private int nextValue;
+    private int numTurns;
     Players currentPlayer;
     Random random;
 
@@ -148,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
         onStart();
         player1Score = 0;
         player2Score = 0;
+        numTurns = 0;
         updateScoresDisplay();
     }
 
@@ -220,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         updateScoresDisplay();
-
+        numTurns++;
         //check if game is over
         if (gameOver())
         {
@@ -248,9 +250,8 @@ public class MainActivity extends AppCompatActivity {
                 card.setEnabled(false);
             }
         }
-
         //switch players if necessary
-        else if (result <0)
+        else if (result <0 || numTurns >=3)
         {
             switchPlayers();
         }
@@ -356,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initDeck(){
         fullDeck = new Card[52];
-        for(int j = 1; j <= 13; j++){
+        for(int j = 2; j <= 14; j++){
             for (int i = 0; i < 52; i+=4){
                 fullDeck[i] = new Card(j, 1);
                 fullDeck[i+1] = new Card(j, 2);
@@ -528,8 +529,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 viewCard(15);
-                updateView();
-
             }
         });
     }

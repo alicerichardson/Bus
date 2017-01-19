@@ -179,5 +179,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/label_text"
         android:layout_below="@+id/linearLayout2"
+        android:textSize="20dp"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

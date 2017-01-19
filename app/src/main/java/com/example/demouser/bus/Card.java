@@ -21,7 +21,7 @@ public class Card implements Comparable<Card>{
     public void setId(){
         if (suit == 1){
             switch (number){
-                case 1: id = R.drawable.ace_of_spades; break;
+                case 14: id = R.drawable.ace_of_spades; break;
                 case 2: id = R.drawable.two_of_spades; break;
                 case 3: id = R.drawable.three_of_spades; break;
                 case 4: id = R.drawable.four_of_spades; break;
@@ -37,7 +37,7 @@ public class Card implements Comparable<Card>{
             }
         }else if (suit == 2){
             switch (number){
-                case 1: id = R.drawable.ace_of_hearts; break;
+                case 14: id = R.drawable.ace_of_hearts; break;
                 case 2: id = R.drawable.two_of_hearts; break;
                 case 3: id = R.drawable.three_of_hearts; break;
                 case 4: id = R.drawable.four_of_hearts; break;
@@ -53,7 +53,7 @@ public class Card implements Comparable<Card>{
             }
         }else if (suit == 3){
             switch ( number ){
-                case 1: id = R.drawable.ace_of_clubs; break;
+                case 14: id = R.drawable.ace_of_clubs; break;
                 case 2: id = R.drawable.two_of_clubs; break;
                 case 3: id = R.drawable.three_of_clubs; break;
                 case 4: id = R.drawable.four_of_clubs; break;
@@ -69,7 +69,7 @@ public class Card implements Comparable<Card>{
             }
         } else if (suit == 4){
             switch (number){
-                case 1: id = R.drawable.ace_of_diamonds; break;
+                case 14: id = R.drawable.ace_of_diamonds; break;
                 case 2: id = R.drawable.two_of_diamonds; break;
                 case 3: id = R.drawable.three_of_diamonds; break;
                 case 4: id = R.drawable.four_of_diamonds; break;
@@ -89,7 +89,7 @@ public class Card implements Comparable<Card>{
     public void setLargeId(){
         if (suit == 1){
             switch (number){
-                case 1: idB = R.drawable.ace_of_spades_big; break;
+                case 14: idB = R.drawable.ace_of_spades_big; break;
                 case 2: idB = R.drawable.two_of_spades_big; break;
                 case 3: idB = R.drawable.three_of_spades_big; break;
                 case 4: idB = R.drawable.four_of_spades_big; break;
@@ -105,7 +105,7 @@ public class Card implements Comparable<Card>{
             }
         }else if (suit == 2){
             switch (number){
-                case 1: idB = R.drawable.ace_of_hearts_big; break;
+                case 14: idB = R.drawable.ace_of_hearts_big; break;
                 case 2: idB = R.drawable.two_of_hearts_big; break;
                 case 3: idB = R.drawable.three_of_hearts_big; break;
                 case 4: idB = R.drawable.four_of_hearts_big; break;
@@ -121,7 +121,7 @@ public class Card implements Comparable<Card>{
             }
         }else if (suit == 3){
             switch ( number ){
-                case 1: idB = R.drawable.ace_of_clubs_big; break;
+                case 14: idB = R.drawable.ace_of_clubs_big; break;
                 case 2: idB = R.drawable.two_of_clubs_big; break;
                 case 3: idB = R.drawable.three_of_clubs_big; break;
                 case 4: idB = R.drawable.four_of_clubs_big; break;
@@ -137,7 +137,7 @@ public class Card implements Comparable<Card>{
             }
         } else if (suit == 4){
             switch (number){
-                case 1: idB = R.drawable.ace_of_diamonds_big; break;
+                case 14: idB = R.drawable.ace_of_diamonds_big; break;
                 case 2: idB = R.drawable.two_of_diamonds_big; break;
                 case 3: idB = R.drawable.three_of_diamonds_big; break;
                 case 4: idB = R.drawable.four_of_diamonds_big; break;
