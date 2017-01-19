@@ -13,17 +13,23 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import android.widget.TextView;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    TextView label;
+    TextView player1ScoreDisplay;
+    TextView player2ScoreDisplay;
     ImageButton card1View;
     ImageButton card2View;
     ImageButton card3View;
@@ -48,14 +54,17 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Card> shownCards;
     int[] shownCardValues;
 
+
+
     private int player1Score;
     private int player2Score;
+    private int nextValue;
+    Players currentPlayer;
+    Random random;
 
-    Players whosTurn;
-
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
-    private String mUserEmail;
+//    private FirebaseAuth mFirebaseAuth;
+//    private FirebaseUser mFirebaseUser;
+//    private String mUserEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +83,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         shownCardValues = new int[16];
+        label = (TextView)findViewById(R.id.label_text);
+        player1ScoreDisplay = (TextView)findViewById(R.id.player1Score);
+        player2ScoreDisplay = (TextView)findViewById(R.id.player2Score);
+
         viewArray = new ImageButton[16];
         shownCards = new ArrayList<Card>();
         drawDeck = new ArrayList<Card>();
+        random = new Random();
 
         viewArray[0] = card1View = (ImageButton)findViewById(R.id.space1);
         viewArray[1] = card2View = (ImageButton)findViewById(R.id.space2);
@@ -97,118 +111,36 @@ public class MainActivity extends AppCompatActivity {
 
         resetButton = (Button)findViewById(R.id.newGameButton);
 
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                reset();
-            }
-        });
-
-        card1View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(0);
-            }
-        });
-        card2View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(1);
-            }
-        });
-        card3View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(2);
-            }
-        });
-        card4View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(3);
-            }
-        });
-        card5View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(4);
-            }
-        });
-        card6View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(5);
-            }
-        });
-        card7View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(6);
-            }
-        });
-        card8View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(7);
-            }
-        });
-        card9View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(8);
-            }
-        });
-        card10View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(9);
-            }
-        });
-        card11View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(10);
-            }
-        });
-        card12View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(11);
-            }
-        });
-        card13View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(12);
-            }
-        });
-        card14View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(13);
-            }
-        });
-        card15View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(14);
-            }
-        });
-        card16View.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewCard(15);
-            }
-        });
+        addListeners();
 
         initDeck();
         shuffle();
+        startGame();
+    }
+
+    public void startGame() {
+        currentPlayer = random.nextBoolean() ? Players.PLAYER1 : Players.PLAYER2;
+        switch(currentPlayer) {
+            case PLAYER1:
+                label.setText(R.string.player1_turn);
+                break;
+            case PLAYER2:
+                label.setText(R.string.player2_turn);
+                //computerTurn();
+                break;
+        }
     }
 
     public void reset(){
         shownCards.clear();
         drawDeck.clear();
         shuffle();
+        //enable buttons
+        for (ImageButton card : viewArray)
+        {
+            card.setEnabled(true);
+        }
+        onStart();
         player1Score = 0;
         player2Score = 0;
     }
@@ -217,6 +149,23 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param x
      */
+
+    private void switchPlayers()
+    {
+        switch(currentPlayer) {
+            case PLAYER1:
+                currentPlayer = Players.PLAYER2;
+                label.setText(R.string.player1_turn);
+                break;
+            case PLAYER2:
+                currentPlayer = Players.PLAYER1;
+                label.setText(R.string.player2_turn);
+                //computerTurn();
+                break;
+        }
+    }
+
+
     public void viewCard(int x)
     {
         int id = 0;
@@ -232,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         //draw a new card and put it on top of the one selected
         int nextValue = drawCard(x);
         intent.putExtra("next", nextValue);
-        if(whosTurn == Players.PLAYER2){
+        if(currentPlayer == Players.PLAYER2){
             boolean player2 = true;
             intent.putExtra("player2", player2);
             boolean player2Move = higher();
@@ -242,13 +191,61 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 9001) {
-            // CardActivity has finished, show the next card
+        if (requestCode == 9001)
+        {
+            //CardActivity has finished, show the next card
             updateView();
+            int thisResult = data.getIntExtra("result",5);
+            updateAfterTurn(thisResult);
         }
+    }
+
+    private void updateAfterTurn(int result)
+    {
+        //update score and display
+        switch(currentPlayer) {
+            case PLAYER1:
+                player1Score+=result;
+                player1ScoreDisplay.setText(""+player1Score);
+                break;
+            case PLAYER2:
+                player2Score+=result;
+                player2ScoreDisplay.setText(""+player2Score);
+                break;
+        }
+        //check if game is over
+        if (gameOver())
+        {
+            //update text with who won
+            if (player1Score>player2Score)
+            {
+                label.setText("The deck is empty - Player 1 wins!");
+            }
+            else if (player1Score<player2Score)
+            {
+                label.setText("The deck is empty - Player 2 wins!");
+            }
+            else
+            {
+                label.setText("The deck is empty - Tie!");
+            }
+            //disable buttons
+            for (ImageButton card : viewArray)
+            {
+                card.setEnabled(false);
+            }
+        }
+
+        //switch players if necessary
+        else if (result <0)
+        {
+            switchPlayers();
+        }
+
     }
 
     /**
@@ -407,7 +404,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run(){
                 computerTurn();
-                if(whosTurn == Players.PLAYER2){
+                if(currentPlayer == Players.PLAYER2){
                     computerTurnIn500();
                 }
             }
@@ -418,6 +415,117 @@ public class MainActivity extends AppCompatActivity {
         int temp = (int) Math.floor(Math.random() * 16);
         viewCard(temp);
     }
+
+    private void addListeners()
+    {
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reset();
+            }
+        });
+
+        card1View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(0);
+                updateView();
+            }
+        });
+        card2View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(1);
+            }
+        });
+        card3View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(2);
+            }
+        });
+        card4View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(3);
+            }
+        });
+        card5View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(4);
+            }
+        });
+        card6View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(5);
+            }
+        });
+        card7View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(6);
+            }
+        });
+        card8View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(7);
+            }
+        });
+        card9View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(8);
+            }
+        });
+        card10View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(9);
+            }
+        });
+        card11View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(10);
+            }
+        });
+        card12View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(11);
+            }
+        });
+        card13View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(12);
+            }
+        });
+        card14View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(13);
+            }
+        });
+        card15View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(14);
+            }
+        });
+        card16View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCard(15);
+                updateView();
+
+            }
+        });
+    }
+
 }
 
 enum Players{

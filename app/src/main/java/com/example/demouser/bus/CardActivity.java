@@ -59,8 +59,7 @@ public class CardActivity extends AppCompatActivity {
         backButton=(Button)findViewById(R.id.backButton);
         higherButton=(Button)findViewById(R.id.higherButton);
         lowerButton = (Button)findViewById(R.id.lowerButton);
-        highToast = Toast.makeText(getApplicationContext(), "You guessed higher!\nThe card was:\nYou lose 0 points", Toast.LENGTH_LONG);
-        lowToast = Toast.makeText(getApplicationContext(), "You guessed lower!\nThe card was: \nYou lose 0 points", Toast.LENGTH_LONG);
+
         resultToast = Toast.makeText(getApplicationContext(), "You guessed %s!\nThe card was: %d\nYou %s points", Toast.LENGTH_SHORT);
 
 
@@ -138,8 +137,10 @@ public class CardActivity extends AppCompatActivity {
 
         setResultToast(result);
 
-        //check if game is over
-
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result",result);
+        setResult(9001,returnIntent);
+        finish();
     }
 
     private void setResultToast(int result)
