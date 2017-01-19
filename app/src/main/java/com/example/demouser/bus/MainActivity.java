@@ -54,15 +54,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        if(mFirebaseUser == null){
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
-            return;
-        } else{
-            mUserEmail = mFirebaseUser.getEmail();
-        }
+//        mFirebaseAuth = FirebaseAuth.getInstance();
+//        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+//        if(mFirebaseUser == null){
+//            startActivity(new Intent(this, SignInActivity.class));
+//            finish();
+//            return;
+//        } else{
+//            mUserEmail = mFirebaseUser.getEmail();
+//        }
 
         setContentView(R.layout.activity_main);
 
@@ -193,53 +193,6 @@ public class MainActivity extends AppCompatActivity {
 
         initDeck();
         shuffle();
-
-<<<<<<< Updated upstream
-=======
-
-<<<<<<< Updated upstream
-//        pic = R.drawable.ace_of_clubs;
-//
-//        //remove this from this method
-//        card1View.setImageResource(pic);
-//
-//        card2View.setImageResource(R.drawable.four_of_clubs);
-//        card3View.setImageResource(R.drawable.ten_of_clubs);
-//        card4View.setImageResource(R.drawable.jack_of_diamonds2);
-//        card5View.setImageResource(R.drawable.ten_of_hearts);
-//        card6View.setImageResource(R.drawable.five_of_spades);
-//        card7View.setImageResource(R.drawable.four_of_spades);
-//        card8View.setImageResource(R.drawable.queen_of_hearts2);
-//        card9View.setImageResource(R.drawable.ace_of_diamonds);
-//        card10View.setImageResource(R.drawable.queen_of_spades2);
-//        card11View.setImageResource(R.drawable.eight_of_hearts);
-//        card12View.setImageResource(R.drawable.nine_of_spades);
-//        card13View.setImageResource(R.drawable.two_of_hearts);
-//        card14View.setImageResource(R.drawable.seven_of_diamonds);
-//        card15View.setImageResource(R.drawable.six_of_clubs);
-//        card16View.setImageResource(R.drawable.four_of_diamonds);
-=======
-        //remove this from this method
-        card1View.setImageResource(R.drawable.ace_of_clubs);
-        card2View.setImageResource(R.drawable.four_of_clubs);
-        card3View.setImageResource(R.drawable.ten_of_clubs);
-        card4View.setImageResource(R.drawable.jack_of_diamonds2);
-        card5View.setImageResource(R.drawable.ten_of_hearts);
-        card6View.setImageResource(R.drawable.five_of_spades);
-        card7View.setImageResource(R.drawable.four_of_spades);
-        card8View.setImageResource(R.drawable.queen_of_hearts2);
-        card9View.setImageResource(R.drawable.ace_of_diamonds);
-        card10View.setImageResource(R.drawable.queen_of_spades2);
-        card11View.setImageResource(R.drawable.eight_of_hearts);
-        card12View.setImageResource(R.drawable.nine_of_spades);
-        card13View.setImageResource(R.drawable.two_of_hearts);
-        card14View.setImageResource(R.drawable.seven_of_diamonds);
-        card15View.setImageResource(R.drawable.six_of_clubs);
-        card16View.setImageResource(R.drawable.four_of_diamonds);
->>>>>>> Stashed changes
-
-
->>>>>>> Stashed changes
     }
 
     public void reset(){
@@ -256,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         int id = 0;
         int value = 0;
 
-        id = shownCards.get(x-1).getId();
+        id = shownCards.get(x-1).getLargeId();
         value = shownCards.get(x-1).getNumber();
 
         //draw a new card and put it on top of the one selected
@@ -395,6 +348,8 @@ public class MainActivity extends AppCompatActivity {
         //return the value
         return value;
     }
+
+
 
     private boolean gameOver()
     {

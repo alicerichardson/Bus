@@ -53,9 +53,9 @@ public class CardActivity extends AppCompatActivity {
         backButton=(Button)findViewById(R.id.backButton);
         higherButton=(Button)findViewById(R.id.higherButton);
         lowerButton = (Button)findViewById(R.id.lowerButton);
-        highToast = Toast.makeText(getApplicationContext(), "You guessed higher!\nThe card was:\nYou lose 0 points", Toast.LENGTH_SHORT);
-        lowToast = Toast.makeText(getApplicationContext(), "You guessed lower!\nThe card was: \nYou lose 0 points", Toast.LENGTH_SHORT);
-        resultToast = Toast.makeText(getApplicationContext(), "You guessed %s!\nThe card was: %d\nYou %s points", Toast.LENGTH_SHORT);
+        highToast = Toast.makeText(getApplicationContext(), "You guessed higher!\nThe card was:\nYou lose 0 points", Toast.LENGTH_LONG);
+        lowToast = Toast.makeText(getApplicationContext(), "You guessed lower!\nThe card was: \nYou lose 0 points", Toast.LENGTH_LONG);
+        resultToast = Toast.makeText(getApplicationContext(), "You guessed %s!\nThe card was: %d\nYou %s points", Toast.LENGTH_LONG);
 
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -93,10 +93,6 @@ public class CardActivity extends AppCompatActivity {
     private void viewCard(int x){
         //int pic = card.getId();
         cardView.setImageResource(x);
-    }
-
-    private boolean isHigher(){
-        return true;
     }
 
     public void checkCard()
