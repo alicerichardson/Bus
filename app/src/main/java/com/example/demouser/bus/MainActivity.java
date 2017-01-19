@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
         int id = 0;
         int value = 0;
 
-        id = shownCards.get(x).getId();
+        id = shownCards.get(x).getLargeId();
         value = shownCards.get(x).getNumber();
 
         //show the selected card in the CardActivity
