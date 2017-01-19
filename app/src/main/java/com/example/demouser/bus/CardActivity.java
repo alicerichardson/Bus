@@ -1,6 +1,7 @@
 package com.example.demouser.bus;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,6 +26,8 @@ public class CardActivity extends AppCompatActivity {
     int player1Score;
     int player2Score;
     boolean guessedHigh;
+    boolean player2Move;
+    boolean player2;
 
     LayoutInflater inflater;
     Toast toast;
@@ -48,6 +51,8 @@ public class CardActivity extends AppCompatActivity {
         int id = intent.getIntExtra("card", 0);
         value = intent.getIntExtra("value", 0);
         nextValue = intent.getIntExtra("next",0);
+        player2 = intent.getBooleanExtra("player2", false);
+        player2Move = intent.getBooleanExtra("player2Move", true);
 
         viewCard(id);
 
@@ -56,7 +61,7 @@ public class CardActivity extends AppCompatActivity {
         lowerButton = (Button)findViewById(R.id.lowerButton);
         highToast = Toast.makeText(getApplicationContext(), "You guessed higher!\nThe card was:\nYou lose 0 points", Toast.LENGTH_LONG);
         lowToast = Toast.makeText(getApplicationContext(), "You guessed lower!\nThe card was: \nYou lose 0 points", Toast.LENGTH_LONG);
-        resultToast = Toast.makeText(getApplicationContext(), "You guessed %s!\nThe card was: %d\nYou %s points", Toast.LENGTH_LONG);
+        resultToast = Toast.makeText(getApplicationContext(), "You guessed %s!\nThe card was: %d\nYou %s points", Toast.LENGTH_SHORT);
 
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +76,6 @@ public class CardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 guessedHigh = true;
                 checkCard();
-                //highToast.show();
                 resultToast.show();
                 //toast.show();
                 finish();
@@ -84,7 +88,6 @@ public class CardActivity extends AppCompatActivity {
                 guessedHigh = false;
                 checkCard();
                 resultToast.show();
-                //lowToast.show();
                 //toast.show();
                 finish();
             }
@@ -92,7 +95,6 @@ public class CardActivity extends AppCompatActivity {
     }
 
     private void viewCard(int x){
-        //int pic = card.getId();
         cardView.setImageResource(x);
     }
 
@@ -104,7 +106,6 @@ public class CardActivity extends AppCompatActivity {
         if (value == nextValue)
         {
             //gain no points
-
             result = 0;
         }
 
@@ -112,7 +113,6 @@ public class CardActivity extends AppCompatActivity {
         else if(value<nextValue && guessedHigh)
         {
             //gain a point
-
             result = 1;
         }
 
@@ -120,21 +120,19 @@ public class CardActivity extends AppCompatActivity {
         else if (value>nextValue && !guessedHigh)
         {
             //gain a point
-
             result = 1;
         }
         //if the user selected lower and it was higher
         else if(value<nextValue && !guessedHigh)
         {
             //lose a point
-
             result = -1;
+            //change players
         }
         //if the user selected higher and it was higher
         else if (value>nextValue && guessedHigh)
         {
             //lose a point
-
             result = -1;
         }
 
@@ -165,4 +163,31 @@ public class CardActivity extends AppCompatActivity {
         resultToast.setText(String.format("You guessed %s!\nThe card was: %d\nYou %s!", guess,nextValue,results ));
     }
 
+    final Handler timerHandler = new Handler();
+    private void computerTurnIn500(){
+        timerHandler.postDelayed(new Runnable(){
+            @Override
+            public void run(){
+                computerTurn();
+                if(player2){
+                    computerTurnIn500();
+                }
+            }
+        }, 1000);
+    }
+
+    private void computerTurn(){
+        if(player2Move){
+            guessedHigh = true;
+            checkCard();
+            resultToast.show();
+        }
+        else{
+            guessedHigh = false;
+            checkCard();
+            resultToast.show();
+        }
+    }
+
 }
+
