@@ -54,9 +54,9 @@ public class CardActivity extends AppCompatActivity {
         backButton=(Button)findViewById(R.id.backButton);
         higherButton=(Button)findViewById(R.id.higherButton);
         lowerButton = (Button)findViewById(R.id.lowerButton);
-        highToast = Toast.makeText(getApplicationContext(), "You guessed higher!\nThe card was:\nYou lose 0 points", Toast.LENGTH_LONG);
-        lowToast = Toast.makeText(getApplicationContext(), "You guessed lower!\nThe card was: \nYou lose 0 points", Toast.LENGTH_LONG);
-        resultToast = Toast.makeText(getApplicationContext(), "You guessed %s!\nThe card was: %d\nYou %s points", Toast.LENGTH_LONG);
+        highToast = Toast.makeText(getApplicationContext(), "You guessed higher!\nThe card was:\nYou lose 0 points", Toast.LENGTH_SHORT);
+        lowToast = Toast.makeText(getApplicationContext(), "You guessed lower!\nThe card was: \nYou lose 0 points", Toast.LENGTH_SHORT);
+        resultToast = Toast.makeText(getApplicationContext(), "You guessed %s!\nThe card was: %d\nYou %s points", Toast.LENGTH_SHORT);
 
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +104,6 @@ public class CardActivity extends AppCompatActivity {
         if (value == nextValue)
         {
             //gain no points
-
             result = 0;
         }
 
@@ -112,7 +111,6 @@ public class CardActivity extends AppCompatActivity {
         else if(value<nextValue && guessedHigh)
         {
             //gain a point
-
             result = 1;
         }
 
@@ -120,28 +118,27 @@ public class CardActivity extends AppCompatActivity {
         else if (value>nextValue && !guessedHigh)
         {
             //gain a point
-
             result = 1;
         }
         //if the user selected lower and it was higher
         else if(value<nextValue && !guessedHigh)
         {
             //lose a point
-
             result = -1;
         }
         //if the user selected higher and it was higher
         else if (value>nextValue && guessedHigh)
         {
             //lose a point
-
             result = -1;
         }
 
         setResultToast(result);
 
-        //check if game is over
-
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result",result);
+        setResult(9001,returnIntent);
+        finish();
     }
 
     private void setResultToast(int result)

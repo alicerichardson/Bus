@@ -23,6 +23,8 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     TextView label;
+    TextView player1ScoreDisplay;
+    TextView player2ScoreDisplay;
     ImageButton card1View;
     ImageButton card2View;
     ImageButton card3View;
@@ -76,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
         shownCardValues = new int[16];
         label = (TextView)findViewById(R.id.label_text);
+        player1ScoreDisplay = (TextView)findViewById(R.id.player1Score);
+        player2ScoreDisplay = (TextView)findViewById(R.id.player2Score);
 
         viewArray = new ImageButton[16];
         random = new Random();
@@ -102,13 +106,11 @@ public class MainActivity extends AppCompatActivity {
 
         initDeck();
         shuffle();
+        startGame();
     }
 
-    public void onStart() {
+    public void startGame() {
         currentPlayer = random.nextBoolean() ? Players.PLAYER1 : Players.PLAYER2;
-        //TextView text = (TextView) findViewById(R.id.ghostText);
-        //text.setText("");
-        //TextView label = (TextView) findViewById(R.id.gameStatus);
         switch(currentPlayer) {
             case PLAYER1:
                 label.setText(R.string.player1_turn);
@@ -122,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void reset(){
         shuffle();
+        //enable buttons
+        for (ImageButton card : viewArray)
+        {
+            card.setEnabled(true);
+        }
         onStart();
         player1Score = 0;
         player2Score = 0;
@@ -158,7 +165,65 @@ public class MainActivity extends AppCompatActivity {
         //draw a new card and put it on top of the one selected
         int nextValue = drawCard(x);
         intent.putExtra("next", nextValue);
-        startActivity(intent);
+        startActivityForResult(intent, 9001);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 9001)
+        {
+            //CardActivity has finished, show the next card
+            updateView();
+            int thisResult = data.getIntExtra("result",5);
+            updateAfterTurn(thisResult);
+        }
+    }
+
+    private void updateAfterTurn(int result)
+    {
+        //update score and display
+        switch(currentPlayer) {
+            case PLAYER1:
+                player1Score+=result;
+                player1ScoreDisplay.setText(""+player1Score);
+                break;
+            case PLAYER2:
+                player2Score+=result;
+                player2ScoreDisplay.setText(""+player2Score);
+                break;
+        }
+        //check if game is over
+        if (gameOver())
+        {
+            //update text with who won
+            if (player1Score>player2Score)
+            {
+                label.setText("The deck is empty - Player 1 wins!");
+            }
+            else if (player1Score<player2Score)
+            {
+                label.setText("The deck is empty - Player 2 wins!");
+            }
+            else
+            {
+                label.setText("The deck is empty - Tie!");
+            }
+            //disable buttons
+            for (ImageButton card : viewArray)
+            {
+                card.setEnabled(false);
+            }
+        }
+
+        //switch players if necessary
+        else if (result <0)
+        {
+            switchPlayers();
+        }
+
     }
 
     private void shuffle()
@@ -224,32 +289,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int drawCard(int location){
-        ImageView spot = null;
         //pop the first card off the draw deck
         Card newCard = drawDeck.remove(0);
         //get the value of the new card
         int nextValue = newCard.getNumber();
         //put the new card on top of the previous one
-        switch(location) {
-            case 0: spot = card1View; break;
-            case 1: spot = card2View; break;
-            case 2: spot = card3View; break;
-            case 3: spot = card4View; break;
-            case 4: spot = card5View; break;
-            case 5: spot = card6View; break;
-            case 6: spot = card7View; break;
-            case 7: spot = card8View; break;
-            case 8: spot = card9View; break;
-            case 9: spot = card10View; break;
-            case 10: spot = card11View; break;
-            case 11: spot = card12View; break;
-            case 12: spot = card13View; break;
-            case 13: spot = card14View; break;
-            case 14: spot = card15View; break;
-            case 15: spot = card16View; break;
-        }
-
-        //setCard(location, newCard, spot);
         shownCardValues[location] = newCard.getNumber();
         shownCards.add(location, newCard);
         //return the value of the card
