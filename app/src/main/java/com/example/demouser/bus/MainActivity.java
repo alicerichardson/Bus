@@ -6,6 +6,7 @@ import android.media.Image;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Card> drawDeck;
     ArrayList<Card> shownCards;
     int[] shownCardValues;
-
+    //Toast infoToast;
 
 
     private int player1Score;
@@ -86,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
         label = (TextView)findViewById(R.id.label_text);
         player1ScoreDisplay = (TextView)findViewById(R.id.player1Score);
         player2ScoreDisplay = (TextView)findViewById(R.id.player2Score);
+        //infoToast = new Toast(this);
+        //infoToast.setView();
+        //infoToast.setGravity(Gravity.CENTER, 0,0);
 
         viewArray = new ImageButton[16];
         shownCards = new ArrayList<Card>();
@@ -143,26 +148,25 @@ public class MainActivity extends AppCompatActivity {
         onStart();
         player1Score = 0;
         player2Score = 0;
+        updateScoresDisplay();
     }
 
-    /**
-     *
-     * @param x
-     */
 
     private void switchPlayers()
     {
         switch(currentPlayer) {
             case PLAYER1:
                 currentPlayer = Players.PLAYER2;
-                label.setText(R.string.player1_turn);
+                label.setText(R.string.player2_turn);
                 break;
             case PLAYER2:
                 currentPlayer = Players.PLAYER1;
-                label.setText(R.string.player2_turn);
+                label.setText(R.string.player1_turn);
                 //computerTurn();
                 break;
         }
+        //infoToast.makeText(this, label.getText(), Toast.LENGTH_LONG);
+        //infoToast.show();
     }
 
 
@@ -210,29 +214,34 @@ public class MainActivity extends AppCompatActivity {
         switch(currentPlayer) {
             case PLAYER1:
                 player1Score+=result;
-                player1ScoreDisplay.setText(""+player1Score);
                 break;
             case PLAYER2:
                 player2Score+=result;
-                player2ScoreDisplay.setText(""+player2Score);
                 break;
         }
+        updateScoresDisplay();
+
         //check if game is over
         if (gameOver())
         {
+            String words ="";
             //update text with who won
             if (player1Score>player2Score)
             {
-                label.setText("The deck is empty - Player 1 wins!");
+                words = "The deck is empty - Player 1 wins!";
             }
             else if (player1Score<player2Score)
             {
-                label.setText("The deck is empty - Player 2 wins!");
+                words = "The deck is empty - Player 2 wins!";
             }
             else
             {
-                label.setText("The deck is empty - Tie!");
+                words = "The deck is empty - Tie!";
             }
+            label.setText(words);
+            //infoToast.setText(words);
+            //infoToast.show();
+
             //disable buttons
             for (ImageButton card : viewArray)
             {
@@ -263,10 +272,10 @@ public class MainActivity extends AppCompatActivity {
                 count--;
             }
             else {
-                shownCards.add(card);
 
                 //for the first 16 cards drawn
                 if (count < 16) {
+                    shownCards.add(card);
                     //add to the screen
                     switch (count) {
                         case 0:
@@ -370,7 +379,7 @@ public class MainActivity extends AppCompatActivity {
         int nextValue = newCard.getNumber();
         //put the new card on top of the previous one
         shownCardValues[location] = newCard.getNumber();
-        shownCards.add(location, newCard);
+        shownCards.set(location, newCard);
         //return the value of the card
         return nextValue;
     }
@@ -429,7 +438,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 viewCard(0);
-                updateView();
             }
         });
         card2View.setOnClickListener(new View.OnClickListener() {
@@ -524,6 +532,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void updateScoresDisplay()
+    {
+        player1ScoreDisplay.setText(""+player1Score);
+        player2ScoreDisplay.setText(""+player2Score);
+
     }
 
 }
