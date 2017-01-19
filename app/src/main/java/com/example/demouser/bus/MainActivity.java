@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        shownCardValues = new int[16];
+
+
         card1View = (ImageButton)findViewById(R.id.space1);
         card2View = (ImageButton)findViewById(R.id.space2);
         card3View = (ImageButton)findViewById(R.id.space3);
@@ -94,126 +97,102 @@ public class MainActivity extends AppCompatActivity {
         card1View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card1View);
-                //putExtra
+                viewCard(1);
             }
         });
         card2View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card2View);
+                viewCard(2);
             }
         });
         card3View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card3View);
+                viewCard(3);
             }
         });
         card4View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card4View);
+                viewCard(4);
             }
         });
         card5View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card5View);
+                viewCard(5);
             }
         });
         card6View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card6View);
+                viewCard(6);
             }
         });
         card7View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card7View);
+                viewCard(7);
             }
         });
         card8View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card8View);
+                viewCard(8);
             }
         });
         card9View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card9View);
+                viewCard(9);
             }
         });
         card10View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card10View);
+                viewCard(10);
             }
         });
         card11View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card11View);
+                viewCard(11);
             }
         });
         card12View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card12View);
+                viewCard(12);
             }
         });
         card13View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card13View);
+                viewCard(13);
             }
         });
         card14View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card14View);
+                viewCard(14);
             }
         });
         card15View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card15View);
+                viewCard(15);
             }
         });
         card16View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewCard(card16View);
+                viewCard(16);
             }
         });
 
         initDeck();
         shuffle();
-
-
-//        pic = R.drawable.ace_of_clubs;
-//
-//        //remove this from this method
-//        card1View.setImageResource(pic);
-//
-//        card2View.setImageResource(R.drawable.four_of_clubs);
-//        card3View.setImageResource(R.drawable.ten_of_clubs);
-//        card4View.setImageResource(R.drawable.jack_of_diamonds2);
-//        card5View.setImageResource(R.drawable.ten_of_hearts);
-//        card6View.setImageResource(R.drawable.five_of_spades);
-//        card7View.setImageResource(R.drawable.four_of_spades);
-//        card8View.setImageResource(R.drawable.queen_of_hearts2);
-//        card9View.setImageResource(R.drawable.ace_of_diamonds);
-//        card10View.setImageResource(R.drawable.queen_of_spades2);
-//        card11View.setImageResource(R.drawable.eight_of_hearts);
-//        card12View.setImageResource(R.drawable.nine_of_spades);
-//        card13View.setImageResource(R.drawable.two_of_hearts);
-//        card14View.setImageResource(R.drawable.seven_of_diamonds);
-//        card15View.setImageResource(R.drawable.six_of_clubs);
-//        card16View.setImageResource(R.drawable.four_of_diamonds);
-
 
     }
 
@@ -225,76 +204,58 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void viewCard(ImageButton card)
+    public void viewCard(int x)
     {
-        //
-        startActivity(new Intent(this, CardActivity.class));
-    }
+        int temp = 0;
+        int id = 0;
+        int value = 0;
 
+        id = shownCards.get(x-1).getId();
+        value = shownCards.get(x-1).getNumber();
+
+        //draw a new card and put it on top of the one selected
+        int nextValue = drawCard(x);
+        //show the selected card in the CardActivity
+        Intent intent = new Intent(this, CardActivity.class);
+        intent.putExtra("card", id);
+        intent.putExtra("value", value);
+        intent.putExtra("next", nextValue);
+        startActivity(intent);
+
+
+    }
     private void shuffle()
     {
         shownCards = new ArrayList<Card>();
         drawDeck = new ArrayList<Card>();
-        int count = 0;
+        ImageView cardView = null;
+        int count = 1;
         //for all 52 cards in the deck
-        while (count<52) {
+        while (count<53) {
             //get a random card
             Card card = fullDeck[(int)Math.floor(Math.random()*52)];
             //for the first 16 cards drawn
-            if (count < 16) {
+            if (count < 17) {
                 //add to the screen
-                switch(count = count){
-                    case 1: count = 0;
-                        setCard(count, card, card1View);
-                        break;
-                    case 2: count = 1;
-                        setCard(count, card, card2View);
-                        break;
-                    case 3: count = 2;
-                        setCard(count, card, card3View);
-                        break;
-                    case 4: count = 3;
-                        setCard(count, card, card4View);
-                        break;
-                    case 5: count = 4;
-                        setCard(count, card, card5View);
-                        break;
-                    case 6: count = 5;
-                        setCard(count, card, card6View);
-                        break;
-                    case 7: count = 6;
-                        setCard(count, card, card7View);
-                        break;
-                    case 8: count = 7;
-                        setCard(count, card, card8View);
-                        break;
-                    case 9: count = 8;
-                        setCard(count, card, card9View);
-                        break;
-                    case 10: count = 9;
-                        setCard(count, card, card10View);
-                        break;
-                    case 11: count = 10;
-                        setCard(count, card, card11View);
-                        break;
-                    case 12: count = 11;
-                        setCard(count, card, card12View);
-                        break;
-                    case 13: count = 12;
-                        setCard(count, card, card13View);
-                        break;
-                    case 14: count = 13;
-                        setCard(count, card, card4View);
-                        break;
-                    case 15: count = 14;
-                        setCard(count, card, card15View);
-                        break;
-                    case 16: count = 15;
-                        setCard(count, card, card16View);
-                        break;
-
-
+                switch (count) {
+                    case 1: cardView = card1View; break;
+                    case 2: cardView = card2View; break;
+                    case 3: cardView = card3View; break;
+                    case 4: cardView = card4View; break;
+                    case 5: cardView = card5View; break;
+                    case 6: cardView = card6View; break;
+                    case 7: cardView = card7View; break;
+                    case 8: cardView = card8View; break;
+                    case 9: cardView = card9View; break;
+                    case 10: cardView = card10View; break;
+                    case 11: cardView = card11View; break;
+                    case 12: cardView = card12View; break;
+                    case 13: cardView = card13View; break;
+                    case 14: cardView = card14View; break;
+                    case 15: cardView = card15View; break;
+                    case 16: cardView = card16View; break;
                 }
+                setCard(count-1, card, cardView);
                 shownCards.add(card);
 
             }
@@ -308,184 +269,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setCard(int n, Card card, ImageView view){
-        shownCardValues = new int[16];
         shownCardValues[n] = card.getNumber();
-
-        int a = card.getNumber();
-        int y = card.getSuit();
-        int x = 0;
-        int pic = 0;
-
-        if (y == 1){
-            switch (x = a){
-                case 1: x = 1;
-                    pic = R.drawable.ace_of_spades;
-                        break;
-                case 2: x = 2;
-                    pic = R.drawable.two_of_spades;
-                        break;
-                case 3: x = 3;
-                    pic = R.drawable.three_of_spades;
-                        break;
-                case 4: x = 4;
-                    pic = R.drawable.four_of_spades;
-                        break;
-                case 5: x = 5;
-                    pic = R.drawable.five_of_spades;
-                        break;
-                case 6: x = 6;
-                    pic = R.drawable.six_of_spades;
-                        break;
-                case 7: x = 7;
-                    pic = R.drawable.seven_of_spades;
-                        break;
-                case 8: x = 8;
-                    pic  = R.drawable.eight_of_spades;
-                        break;
-                case 9: x = 9;
-                    pic = R.drawable.nine_of_spades;
-                        break;
-                case 10: x = 10;
-                    pic = R.drawable.ten_of_spades;
-                        break;
-                case 11: x = 11;
-                    pic  = R.drawable.jack_of_spades2;
-                        break;
-                case 12: x = 12;
-                    pic = R.drawable.queen_of_spades2;
-                        break;
-                case 13: x = 13;
-                    pic = R.drawable.king_of_spades2;
-                        break;
-            }
-        }else if (y == 2){
-            switch (x = a){
-                case 1: x = 1;
-                    pic = R.drawable.ace_of_hearts;
-                        break;
-                case 2: x = 2;
-                    pic = R.drawable.two_of_hearts;
-                        break;
-                case 3: x = 3;
-                    pic = R.drawable.three_of_hearts;
-                        break;
-                case 4: x = 4;
-                    pic = R.drawable.four_of_hearts;
-                        break;
-                case 5: x = 5;
-                    pic = R.drawable.five_of_hearts;
-                        break;
-                case 6: x = 6;
-                    pic = R.drawable.six_of_hearts;
-                        break;
-                case 7: x = 7;
-                    pic = R.drawable.seven_of_hearts;
-                        break;
-                case 8: x = 8;
-                    pic = R.drawable.eight_of_hearts;
-                        break;
-                case 9: x = 9;
-                    pic  = R.drawable.nine_of_hearts;
-                        break;
-                case 10: x = 10;
-                    pic = R.drawable.ten_of_hearts;
-                        break;
-                case 11: x = 11;
-                    pic = R.drawable.jack_of_hearts2;
-                        break;
-                case 12: x = 12;
-                    pic = R.drawable.queen_of_hearts2;
-                        break;
-                case 13: x = 13;
-                    pic = R.drawable.king_of_hearts2;
-                        break;
-            }
-        }else if (y == 3){
-            switch ( x = a){
-                case 1: x = 1;
-                    pic = R.drawable.ace_of_clubs;
-                        break;
-                case 2: x = 2;
-                    pic = R.drawable.two_of_clubs;
-                        break;
-                case 3: x = 3;
-                    pic = R.drawable.three_of_clubs;
-                        break;
-                case 4: x = 4;
-                    pic = R.drawable.four_of_clubs;
-                        break;
-                case 5: x = 5;
-                    pic = R.drawable.five_of_clubs;
-                        break;
-                case 6: x = 6;
-                    pic = R.drawable.six_of_clubs;
-                        break;
-                case 7: x = 7;
-                    pic = R.drawable.seven_of_clubs;
-                        break;
-                case 8: x = 8;
-                    pic = R.drawable.eight_of_clubs;
-                        break;
-                case 9: x = 9;
-                    pic = R.drawable.nine_of_clubs;
-                        break;
-                case 10: x = 10;
-                    pic = R.drawable.ten_of_clubs;
-                        break;
-                case 11: x = 11;
-                    pic = R.drawable.jack_of_clubs2;
-                        break;
-                case 12: x = 12;
-                    pic = R.drawable.queen_of_clubs2;
-                        break;
-                case 13: x = 13;
-                    pic = R.drawable.king_of_clubs2;
-                        break;
-            }
-        } else if (y == 4){
-            switch (x = a){
-                case 1: x = 1;
-                    pic = R.drawable.ace_of_diamonds;
-                        break;
-                case 2: x = 2;
-                    pic = R.drawable.two_of_diamonds;
-                        break;
-                case 3: x = 3;
-                    pic = R.drawable.three_of_diamonds;
-                        break;
-                case 4: x = 4;
-                    pic = R.drawable.four_of_diamonds;
-                        break;
-                case 5: x = 5;
-                    pic = R.drawable.five_of_diamonds;
-                        break;
-                case 6: x = 6;
-                    pic = R.drawable.six_of_diamonds;
-                        break;
-                case 7: x = 7;
-                    pic = R.drawable.seven_of_diamonds;
-                        break;
-                case 8: x = 8;
-                    pic = R.drawable.eight_of_diamonds;
-                        break;
-                case 9: x = 9;
-                    pic = R.drawable.nine_of_diamonds;
-                        break;
-                case 10: x = 10;
-                    pic = R.drawable.ten_of_diamonds;
-                        break;
-                case 11: x = 11;
-                    pic = R.drawable.jack_of_diamonds2;
-                        break;
-                case 12: x = 12;
-                    pic = R.drawable.queen_of_diamonds2;
-                        break;
-                case 13: x = 13;
-                    pic = R.drawable.king_of_diamonds2;
-                        break;
-            }
-        }
-        view.setImageResource(pic);
+        view.setImageResource(card.getId());
     }
 
     private void initDeck(){
@@ -499,6 +284,70 @@ public class MainActivity extends AppCompatActivity {
                 j++;
             }
         }
+    }
+
+    private int drawCard(int location){
+        ImageView spot = null;
+
+        //pop the first card off the draw deck
+        Card newCard = drawDeck.remove(0);
+        //get the value of the new card
+        int value = newCard.getNumber();
+        //put the new card on top of the previous one
+        switch(location) {
+            case 1:
+                spot = card1View;
+                break;
+            case 2:
+                spot = card2View;
+                break;
+            case 3:
+                spot = card3View;
+                break;
+            case 4:
+                spot = card4View;
+                break;
+            case 5:
+                spot = card5View;
+                break;
+            case 6:
+                spot = card6View;
+                break;
+            case 7:
+                spot = card7View;
+                break;
+            case 8:
+                spot = card8View;
+                break;
+            case 9:
+                spot = card9View;
+                break;
+            case 10:
+                spot = card10View;
+                break;
+            case 11:
+                spot = card11View;
+                break;
+            case 12:
+                spot = card12View;
+                break;
+            case 13:
+                spot = card13View;
+                break;
+            case 14:
+                spot = card14View;
+                break;
+            case 15:
+                spot = card15View;
+                break;
+            case 16:
+                spot = card16View;
+                break;
+        }
+
+        setCard(location, newCard, spot);
+        //return the value
+        return value;
     }
 
 }
