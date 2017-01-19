@@ -142,6 +142,9 @@ public class CardActivity extends AppCompatActivity {
         }
 
         setResultToast(result);
+
+        //check if game is over
+
     }
 
     private void setResultToast(int result)

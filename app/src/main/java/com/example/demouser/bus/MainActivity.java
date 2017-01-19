@@ -288,7 +288,6 @@ public class MainActivity extends AppCompatActivity {
 
     private int drawCard(int location){
         ImageView spot = null;
-
         //pop the first card off the draw deck
         Card newCard = drawDeck.remove(0);
         //get the value of the new card
@@ -346,8 +345,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setCard(location, newCard, spot);
+
         //return the value
         return value;
+    }
+
+    private boolean gameOver()
+    {
+        return drawDeck.isEmpty();
     }
 
 }
