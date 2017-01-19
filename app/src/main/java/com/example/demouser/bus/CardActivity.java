@@ -14,7 +14,6 @@ import android.widget.Toast;
 public class CardActivity extends AppCompatActivity {
 
     ImageView cardView;
-    Card card;
     Button backButton;
     Button lowerButton;
     Button higherButton;
@@ -23,6 +22,8 @@ public class CardActivity extends AppCompatActivity {
     Toast resultToast;
     int value;
     int nextValue;
+    int player1Score;
+    int player2Score;
     boolean guessedHigh;
 
     LayoutInflater inflater;
