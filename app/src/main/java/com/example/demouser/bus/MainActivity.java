@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton card16View;
     ImageButton[] viewArray;
     Button resetButton;
+    boolean computerPlayer;
 
     Card[] fullDeck;
     ArrayList<Card> drawDeck;
@@ -58,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
     //Toast infoToast;
 
 
+    private Card card;
     private int player1Score;
     private int player2Score;
-    private int nextValue;
     private int numTurns;
     Players currentPlayer;
     Random random;
@@ -84,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        computerPlayer = intent.getExtras().getBoolean("computerPlayer");
 
         shownCardValues = new int[16];
         label = (TextView)findViewById(R.id.label_text);
@@ -131,8 +135,15 @@ public class MainActivity extends AppCompatActivity {
                 label.setText(R.string.player1_turn);
                 break;
             case PLAYER2:
-                label.setText(R.string.player2_turn);
-                //computerTurn();
+                if (computerPlayer) {
+                    label.setText(R.string.computer_turn);
+                    computerTurnIn500();
+                    for (ImageButton card : viewArray) {
+                        card.setEnabled(false);
+                    }
+                }
+                else
+                    label.setText(R.string.player2_turn);
                 break;
         }
     }
@@ -159,12 +170,24 @@ public class MainActivity extends AppCompatActivity {
         switch(currentPlayer) {
             case PLAYER1:
                 currentPlayer = Players.PLAYER2;
+                if (computerPlayer) {
+                    System.out.println("computer turn");
+                    label.setText(R.string.computer_turn);
+                    //disable buttons
+                    for (ImageButton card : viewArray) {
+                        card.setEnabled(false);
+                    }
+                    computerTurnIn500();
+                }
                 label.setText(R.string.player2_turn);
                 break;
             case PLAYER2:
                 currentPlayer = Players.PLAYER1;
                 label.setText(R.string.player1_turn);
-                //computerTurn();
+                //enable buttons
+                for (ImageButton card : viewArray) {
+                    card.setEnabled(true);
+                }
                 break;
         }
         //infoToast.makeText(this, label.getText(), Toast.LENGTH_LONG);
@@ -187,9 +210,9 @@ public class MainActivity extends AppCompatActivity {
         //draw a new card and put it on top of the one selected
         int nextValue = drawCard(x);
         intent.putExtra("next", nextValue);
-        if(currentPlayer == Players.PLAYER2){
+        if(computerPlayer && currentPlayer == Players.PLAYER2){
             boolean player2 = true;
-            intent.putExtra("player2", player2);
+            intent.putExtra("computerTurn", player2);
             boolean player2Move = higher();
             intent.putExtra("player2Move", player2Move);
         }
@@ -255,6 +278,10 @@ public class MainActivity extends AppCompatActivity {
         {
             switchPlayers();
         }
+        else if (computerPlayer && currentPlayer == Players.PLAYER2)
+        {
+            computerTurnIn500();
+        }
 
     }
 
@@ -273,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
                 count--;
             }
             else {
-
                 //for the first 16 cards drawn
                 if (count < 16) {
                     shownCards.add(card);
@@ -405,7 +431,14 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean higher(){
         //logic for deciding to choose based on other shown cards
-        return true;
+
+        //if card is 2, always do higher, if card is king, always do lower
+        if(card.getNumber() <= 6){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     final Handler timerHandler = new Handler();
@@ -414,15 +447,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run(){
                 computerTurn();
-                if(currentPlayer == Players.PLAYER2){
-                    computerTurnIn500();
-                }
             }
         }, 1000);
     }
 
     private void computerTurn(){
         int temp = (int) Math.floor(Math.random() * 16);
+        card = shownCards.get(temp);
         viewCard(temp);
     }
 

@@ -45,14 +45,15 @@ public class CardActivity extends AppCompatActivity {
                 (ViewGroup) findViewById(R.id.relativeLayout1));
         toast = new Toast(this);
         toast.setView(view);
-
         //
+
         Intent intent = getIntent();
         int id = intent.getIntExtra("card", 0);
         value = intent.getIntExtra("value", 0);
         nextValue = intent.getIntExtra("next",0);
-        player2 = intent.getBooleanExtra("player2", false);
+        player2 = intent.getBooleanExtra("computerTurn", false);
         player2Move = intent.getBooleanExtra("player2Move", true);
+
 
         viewCard(id);
 
@@ -91,6 +92,10 @@ public class CardActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        if(player2){
+            computerTurnIn1000();
+        }
     }
 
     private void viewCard(int x){
@@ -147,6 +152,18 @@ public class CardActivity extends AppCompatActivity {
     {
         String guess;
         String results;
+        String nextCard;
+
+        if (nextValue==14)
+            nextCard="an ace";
+        else if (nextValue==13)
+            nextCard="a king";
+        else if (nextValue==12)
+            nextCard="a queen";
+        else if (nextValue==11)
+            nextCard="a jack";
+        else
+            nextCard = "a "+nextValue;
 
         if (guessedHigh)
             guess = "higher";
@@ -161,18 +178,15 @@ public class CardActivity extends AppCompatActivity {
             results = "gain no points";
 
 
-        resultToast.setText(String.format("You guessed %s!\nThe card was: %d\nYou %s!", guess,nextValue,results ));
+        resultToast.setText(String.format("You guessed %s!\nThe card was %s\nYou %s!", guess,nextCard,results ));
     }
 
     final Handler timerHandler = new Handler();
-    private void computerTurnIn500(){
+    private void computerTurnIn1000(){
         timerHandler.postDelayed(new Runnable(){
             @Override
             public void run(){
                 computerTurn();
-                if(player2){
-                    computerTurnIn500();
-                }
             }
         }, 1000);
     }
@@ -180,14 +194,13 @@ public class CardActivity extends AppCompatActivity {
     private void computerTurn(){
         if(player2Move){
             guessedHigh = true;
-            checkCard();
-            resultToast.show();
         }
         else{
             guessedHigh = false;
-            checkCard();
-            resultToast.show();
         }
+        checkCard();
+        resultToast.show();
+        finish();
     }
 
 }
