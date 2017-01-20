@@ -5,5 +5,7 @@
     <string name="rules">How to play: \n\nThere are 16 cards face up to begin. All remaining cards are in the deck.\n\nThe player will select one card from the 16 and guess whether the next card drawn from the deck will be higher or lower than the selected card. In this game, aces are high.\n\nIf the player is correct, they win a point. If the player is incorrect, they lose a point. Your turn lasts until you get one wrong or you\'ve drawn three cards.\n\nThe game ends when there are no more cards in the deck. The player with the highest score at the end of the game wins.\n\nThe game can be played against the computer or another player on the same phone.\n</string>
     <string name="player1_turn">"Player 1's turn!</string>
     <string name="player2_turn">"Player 2's turn!</string>
+    <string name="computer_score">Computer Score: </string>
+    <string name="player2_score">Player 2 Score: </string>
 
 </resources>

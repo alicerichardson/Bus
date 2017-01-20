@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
@@ -86,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        Intent intent = getIntent();
-        computerPlayer = intent.getExtras().getBoolean("computerPlayer");
+        Intent startIntent = getIntent();
+        computerPlayer = startIntent.getExtras().getBoolean("playComputer");
 
         shownCardValues = new int[16];
         label = (TextView)findViewById(R.id.label_text);
@@ -136,14 +138,17 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case PLAYER2:
                 if (computerPlayer) {
+                    ((TextView)findViewById(R.id.player2ScoreText)).setText(R.string.computer_score);
                     label.setText(R.string.computer_turn);
                     computerTurnIn500();
                     for (ImageButton card : viewArray) {
                         card.setEnabled(false);
                     }
                 }
-                else
+                else {
                     label.setText(R.string.player2_turn);
+                    ((TextView) findViewById(R.id.player2ScoreText)).setText(R.string.player2_score);
+                }
                 break;
         }
     }
@@ -157,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         {
             card.setEnabled(true);
         }
-        onStart();
+        startGame();
         player1Score = 0;
         player2Score = 0;
         numTurns = 0;
@@ -171,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
             case PLAYER1:
                 currentPlayer = Players.PLAYER2;
                 if (computerPlayer) {
-                    System.out.println("computer turn");
                     label.setText(R.string.computer_turn);
                     //disable buttons
                     for (ImageButton card : viewArray) {
@@ -179,7 +183,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     computerTurnIn500();
                 }
-                label.setText(R.string.player2_turn);
+                else
+                    label.setText(R.string.player2_turn);
                 break;
             case PLAYER2:
                 currentPlayer = Players.PLAYER1;
@@ -274,8 +279,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         //switch players if necessary
-        else if (result <0 || numTurns >=3)
+        else if (result < 0 || numTurns >= 3)
         {
+            numTurns = 0;
             switchPlayers();
         }
         else if (computerPlayer && currentPlayer == Players.PLAYER2)
@@ -433,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
         //logic for deciding to choose based on other shown cards
 
         //if card is 2, always do higher, if card is king, always do lower
-        if(card.getNumber() <= 6){
+        if(card.getNumber() <= 4){
             return true;
         }
         else{
@@ -452,9 +458,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void computerTurn(){
-        int temp = (int) Math.floor(Math.random() * 16);
+        int temp = getBestCard();
+        //int temp = (int) Math.floor(Math.random() * 16);
         card = shownCards.get(temp);
         viewCard(temp);
+    }
+
+    private int getBestCard()
+    {
+        int hi = shownCardValues[0];
+        int hiIn = 0;
+        int lo = shownCardValues[0];
+        int loIn = 0;
+        for (int i =0; i<shownCardValues.length; i++){
+            if (shownCardValues[i] < lo)
+            {
+                lo = shownCardValues[i];
+                loIn = i;
+
+            }
+            else if (shownCardValues[i]>hi)
+            {
+                hi = shownCardValues[i];
+                hiIn =i;
+            }
+        }
+        if ((lo-2) < (14-hi))
+        {
+            return loIn;
+        }
+        else
+            return hiIn;
     }
 
     private void addListeners()

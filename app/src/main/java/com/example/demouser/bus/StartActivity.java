@@ -8,28 +8,21 @@ import android.widget.Button;
 
 public class StartActivity extends AppCompatActivity {
 
-    private boolean playComputer;
+    public boolean playComputer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        //Button startbutton = (Button) findViewById(R.id.start_button);
         Button computerButton = (Button) findViewById(R.id.computer_button);
         Button twoPlayerButton = (Button) findViewById(R.id.player_button);
 
-//        startbutton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                play();
-//            }
-//        });
         computerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                play();
                 playComputer = true;
+                play();
             }
         });
         twoPlayerButton.setOnClickListener(new View.OnClickListener() {
